@@ -1,0 +1,9 @@
+imgaug
+colorlog
+pyyaml
+opencv-contrib-python
+numpy
+tqdm
+ultralytics
+pygame
+pygame-gui

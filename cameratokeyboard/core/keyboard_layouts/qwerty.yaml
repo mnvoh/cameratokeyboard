@@ -1,0 +1,134 @@
+# The distance from the edge of the keyboard to the center of the markers
+distance_from_markers_x: -0.025
+# In the case of y, since the markers are on the same level as the first rows (top or bottom)
+# the value is negative.
+distance_from_markers_y: 0.050
+key_height: 0.2
+keys:
+  row_1:
+    - name: backtick
+      width: 0.067
+    - name: one
+      width: 0.067
+    - name: two
+      width: 0.067
+    - name: three
+      width: 0.067
+    - name: four
+      width: 0.067
+    - name: five
+      width: 0.067
+    - name: six
+      width: 0.067
+    - name: seven
+      width: 0.067
+    - name: eight
+      width: 0.067
+    - name: nine
+      width: 0.067
+    - name: zero
+      width: 0.067
+    - name: minus
+      width: 0.067
+    - name: equal
+      width: 0.067
+    - name: backspace
+      width: 0.134
+  row_2:
+    - name: tab
+      width: 0.101
+    - name: q
+      width: 0.067
+    - name: w
+      width: 0.067
+    - name: e
+      width: 0.067
+    - name: r
+      width: 0.067
+    - name: t
+      width: 0.067
+    - name: y
+      width: 0.067
+    - name: u
+      width: 0.067
+    - name: i
+      width: 0.067
+    - name: o
+      width: 0.067
+    - name: p
+      width: 0.067
+    - name: left_bracket
+      width: 0.067
+    - name: right_bracket
+      width: 0.067
+    - name: backslash
+      width: 0.101
+  row_3:
+    - name: caps_lock
+      width: 0.118
+    - name: a
+      width: 0.067
+    - name: s
+      width: 0.067
+    - name: d
+      width: 0.067
+    - name: f
+      width: 0.067
+    - name: g
+      width: 0.067
+    - name: h
+      width: 0.067
+    - name: j
+      width: 0.067
+    - name: k
+      width: 0.067
+    - name: l
+      width: 0.067
+    - name: semicolon
+      width: 0.067
+    - name: quote
+      width: 0.067
+    - name: enter
+      width: 0.151
+  row_4:
+    - name: left_shift
+      width: 0.151
+    - name: z
+      width: 0.067
+    - name: x
+      width: 0.067
+    - name: c
+      width: 0.067
+    - name: v
+      width: 0.067
+    - name: b
+      width: 0.067
+    - name: n
+      width: 0.067
+    - name: m
+      width: 0.067
+    - name: comma
+      width: 0.067
+    - name: period
+      width: 0.067
+    - name: slash
+      width: 0.067
+    - name: right_shift
+      width: 0.183
+  row_5:
+    - name: left_ctrl
+      width: 0.101
+    - name: left_win
+      width: 0.083
+    - name: left_alt
+      width: 0.083
+    - name: space
+      width: 0.383
+    - name: right_alt
+      width: 0.083
+    - name: menu
+      width: 0.083
+    - name: right_win
+      width: 0.083
+    - name: right_ctrl
+      width: 0.101

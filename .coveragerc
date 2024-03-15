@@ -1,0 +1,8 @@
+[report]
+show_missing=true
+
+[run]
+omit =
+    cameratokeyboard/model/*
+    cameratokeyboard/app/ui.py
+    */__init__.py

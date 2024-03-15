@@ -1,0 +1,9 @@
+path: c2k
+train: images/train
+test: images/test
+val: images/val
+
+names:
+  0: finger 
+  1: thumb
+  2: marker

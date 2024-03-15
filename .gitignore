@@ -1,0 +1,12 @@
+**/__pycache__/
+**/.pytest_cache/
+
+/runs
+/raw_dataset
+/datasets
+/.venv
+.vscode
+/raw_dataset/*
+!/raw_dataset/.gitkeep
+yolov8n.pt
+.coverage

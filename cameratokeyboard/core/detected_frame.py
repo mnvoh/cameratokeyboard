@@ -18,7 +18,9 @@ from cameratokeyboard.interfaces import IDetectedFrameData
 from cameratokeyboard.types import EulerAngle, Fingers, FrameState, Point, RawImage
 
 
-class DetectedFrame(IDetectedFrameData):
+class DetectedFrame(
+    IDetectedFrameData
+):  # pylint: disable=missing-class-docstring, too-many-instance-attributes
     def __init__(
         self, detection_results: ultralytics.engine.results.Results, config: Config
     ):

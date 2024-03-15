@@ -7,7 +7,7 @@ from cameratokeyboard.core.math import (
 from cameratokeyboard.types import Point, Finger, Fingers
 
 
-class DetectedMarkers:
+class DetectedMarkers:  # pylint: disable=too-many-instance-attributes
     """
     Represents the coordinates of the detected markers.
     NOTE: This class assumes that the yaw and roll angles of the camera are as close

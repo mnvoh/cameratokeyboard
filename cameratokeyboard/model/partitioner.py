@@ -50,7 +50,7 @@ class DataPartitioner:
         LOGGER.info("Reading files list.")
 
         self._files_list = set(
-            [f.split(".")[0] for f in os.listdir(self._raw_dataset_path)]
+            f.split(".")[0] for f in os.listdir(self._raw_dataset_path)
         )
         shuffle(self._files_list)
 

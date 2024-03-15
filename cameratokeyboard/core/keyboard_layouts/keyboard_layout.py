@@ -1,10 +1,9 @@
+# pylint: disable=too-many-arguments
+
 import os
 import pathlib
-from typing import Tuple
 
 import yaml
-
-from cameratokeyboard.types import Point
 
 
 KEY_MAPS = {

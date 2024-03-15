@@ -1,4 +1,5 @@
 import asyncio
+import sys
 import time
 import traceback
 
@@ -53,10 +54,10 @@ class App:
                     for key in self._detected_frame.down_keys:
                         self._on_key_down(key)
 
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 print(e)
                 traceback.print_exc()
-                exit(1)
+                sys.exit(1)
 
             await asyncio.sleep(0.01)
 

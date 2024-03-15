@@ -25,7 +25,7 @@ CROP_MARGIN = 0.1
 ASYNC_SLEEP = 0.01
 
 
-class UI:
+class UI:  # pylint: disable=too-many-instance-attributes
     """
     Represents the user interface.
 

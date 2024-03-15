@@ -11,6 +11,9 @@ COMMANDS = {
 
 
 def parse_args(argv) -> dict:
+    """
+    Parses all the command line arguments and returns them as a dictionary.
+    """
     parser = argparse.ArgumentParser(description="Camera To Keyboard")
 
     parser.add_argument(

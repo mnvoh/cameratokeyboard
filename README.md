@@ -185,7 +185,7 @@ options:
 
 ## Contributing
 
-Please visit [CONTRIBUTING](docs/CONTRIBUTING) for more info.
+Please visit [CONTRIBUTING](docs/CONTRIBUTING.md) for more info.
 
 ## Roadmap
 

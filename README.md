@@ -5,10 +5,11 @@
   Camera to Keyboard
   <br>
 
-  [![tests](https://img.shields.io/github/actions/workflow/status/mnvoh/cameratokeyboard/test.yml)](https://github.com/mnvoh/cameratokeyboard/actions)
-  [![codecov](https://codecov.io/gh/mnvoh/cameratokeyboard/graph/badge.svg?token=Q7P8AT45OF)](https://codecov.io/gh/mnvoh/cameratokeyboard)
+  ![Python Version](https://img.shields.io/badge/Python-3.8..3.11-blue)
+  [![Tests](https://img.shields.io/github/actions/workflow/status/mnvoh/cameratokeyboard/test.yml)](https://github.com/mnvoh/cameratokeyboard/actions)
+  [![Codecov](https://codecov.io/gh/mnvoh/cameratokeyboard/graph/badge.svg?token=Q7P8AT45OF)](https://codecov.io/gh/mnvoh/cameratokeyboard)
   [![Discord](https://img.shields.io/discord/1218354858466218015)](https://discord.gg/6mgHzQM6N8)
-
+  [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 </h1>
 
 

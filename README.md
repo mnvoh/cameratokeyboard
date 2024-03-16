@@ -4,7 +4,13 @@
   <br>
   Camera to Keyboard
   <br>
+
+  [![tests](https://img.shields.io/github/actions/workflow/status/mnvoh/cameratokeyboard/test.yml)](https://github.com/mnvoh/cameratokeyboard/actions)
+  [![codecov](https://codecov.io/gh/mnvoh/cameratokeyboard/graph/badge.svg?token=Q7P8AT45OF)](https://codecov.io/gh/mnvoh/cameratokeyboard)
+  [![Discord](https://img.shields.io/discord/1218354858466218015)](https://discord.gg/6mgHzQM6N8)
+
 </h1>
+
 
 ⭐ Star it, make it visible, make it better!
 

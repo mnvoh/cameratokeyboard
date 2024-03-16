@@ -1,9 +1,12 @@
 import logging
+import os
 
 import ultralytics
 
 from cameratokeyboard.config import Config
 from cameratokeyboard.core.detected_frame import DetectedFrame
+
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "model.pt")
 
 
 class Detector:
@@ -18,7 +21,7 @@ class Detector:
         logging.getLogger("ultralytics").setLevel(logging.ERROR)
 
         self._config = config
-        self._model = ultralytics.YOLO("cameratokeyboard/model.pt")
+        self._model = ultralytics.YOLO(MODEL_PATH)
         self._device = config.processing_device
         self._iou = config.iou
         self._detected_frame = None

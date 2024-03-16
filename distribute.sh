@@ -15,11 +15,20 @@ python -m build
 
 if [[ "$testing" == "test" ]]; then
     echo "Uploading to TestPyPI"
-    python -m twine upload --repository testpypi dist/*
+    python -m twine upload \
+        -u "__TOKEN__" \
+        -p "${PYPI_TEST_PASSWORD}" \
+        --repository testpypi \
+        dist/*
 else
     echo "Uploading to PyPI"
-    python -m twine upload dist/*
+    python -m twine upload \
+        -u "__TOKEN__" \
+        -p "${PYPI_PROD_PASSWORD}" \
+        dist/*
+
+    git push
+    git tag -a "$version" -m "Release $version"
+    git push origin "$version"
 fi
 
-git tag -a "$version" -m "Release $version"
-git push origin "$version"

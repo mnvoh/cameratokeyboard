@@ -58,6 +58,12 @@ Run the following command to install the package from PyPI:
 python -m pip install --upgrade c2k
 ```
 
+Run the project with:
+
+```bash
+python -m c2k
+```
+
 ### Using Git
 
 1. Clone the repository

@@ -5,5 +5,5 @@ opencv-contrib-python
 numpy
 tqdm
 ultralytics
-pygame
+pygame-ce
 pygame-gui

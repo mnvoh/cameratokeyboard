@@ -1,4 +1,5 @@
 import asyncio
+import os
 import time
 from typing import Tuple
 
@@ -8,7 +9,9 @@ import pygame_gui
 from cameratokeyboard.types import FrameState
 from cameratokeyboard.interfaces import IDetectedFrameData
 
-DEFAULT_IMAGE = pygame.image.load("assets/nocam.png")
+DEFAULT_IMAGE = pygame.image.load(
+    os.path.join(os.path.dirname(__file__), "..", "assets", "nocam.png")
+)
 OUTLINE_COLORS = {
     FrameState.VALID: (4, 189, 84),
     FrameState.INITIALIZING: (99, 99, 99),

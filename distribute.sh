@@ -8,6 +8,8 @@ version="v$version"
 
 testing=$1
 
+rm -r dist
+
 pip install --upgrade build twine
 python -m build
 
@@ -16,9 +18,8 @@ if [[ "$testing" == "test" ]]; then
     python -m twine upload --repository testpypi dist/*
 else
     echo "Uploading to PyPI"
-    # python -m twine upload dist/*
+    python -m twine upload dist/*
 fi
 
-
-
-# git tag -a "$version" -m "Release $version"
+git tag -a "$version" -m "Release $version"
+git push origin "$version"

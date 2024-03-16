@@ -165,7 +165,7 @@ your camera's pitch to get the best results.
 > If you are using WSL, you cannot access your webcam in that environment. A
 > workaround is to use this [Kernel](https://github.com/PINTO0309/wsl2_linux_kernel_usbcam_enable_conf)
 > but I have not used it and will not take responsibility for any consequences if you decide to
-> use it. Just run the c2k.py in Powershell, ez pz.
+> use it. Just run the app in Powershell, ez pz.
 
 ```
 usage: c2k.py [-h] [-e TRAINING_EPOCHS] [-ts WIDTH HEIGHT] [-b TRAINING_BATCH] [-rp RAW_DATASET_PATH]

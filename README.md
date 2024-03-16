@@ -120,6 +120,17 @@ That's it, no second steps. The newly trained model (`best.pt`) is moved to
 
 ## App Guide
 
+This app relies on 4 markers (aka control points) to determine the boundries of the keyboard.
+So first off, print the following image on paper. Print on an A4 paper, it's the same size
+as an actual keyboard.
+
+> [!TIP]
+> The algorithm only needs the markers and everything else is irrelevant to it, you could 
+> even just draw the markers yoruself using a marker! (pun probably intended, undecided as of now).
+> But you, as a user, are most probably gonna need to know where the keys are.
+
+![Keyboard Print](https://raw.githubusercontent.com/mnvoh/cameratokeyboard/main/docs/images/keyboard.jpg)
+
 At the moment, the interface is really simple, just a text box and a preview of what's 
 going on. 
 

@@ -10,3 +10,4 @@
 !/raw_dataset/.gitkeep
 yolov8n.pt
 .coverage
+/dist

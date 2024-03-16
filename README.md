@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="#"><img src="docs/images/c2k.svg" alt="Camera to Keyboard" width="200"></a>
+  <a href="#"><img src="https://raw.githubusercontent.com/mnvoh/cameratokeyboard/main/docs/images/c2k.png" alt="Camera to Keyboard" width="200"></a>
   <br>
   Camera to Keyboard
   <br>
@@ -105,7 +105,7 @@ That's it, no second steps. The newly trained model (`best.pt`) is moved to
 At the moment, the interface is really simple, just a text box and a preview of what's 
 going on. 
 
-![Camera to Keyboard UI](docs/images/screenshot.png)
+![Camera to Keyboard UI](https://raw.githubusercontent.com/mnvoh/cameratokeyboard/main/docs/images/screenshot.png)
 
 #### The Text Box
 

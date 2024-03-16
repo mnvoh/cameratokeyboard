@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="#"><img src="docs/images/c2k.svg" alt="Markdownify" width="200"></a>
+  <a href="#"><img src="docs/images/c2k.svg" alt="Camera to Keyboard" width="200"></a>
   <br>
   Camera to Keyboard
   <br>

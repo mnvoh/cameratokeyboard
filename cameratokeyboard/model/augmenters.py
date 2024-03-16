@@ -2,7 +2,7 @@
 # pylint: skip-file
 
 from abc import ABC, abstractmethod
-from typing import Tuple
+from typing import Tuple, Union
 
 from imgaug import augmenters as iaa
 from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
@@ -107,7 +107,9 @@ class BlurAugmenter(ImageAugmenter):
         self.min_sigma = min_sigma
         self.max_sigma = max_sigma
 
-    def apply(self, image: np.ndarray, bounding_boxes: str) -> Tuple[np.ndarray | str]:
+    def apply(
+        self, image: np.ndarray, bounding_boxes: str
+    ) -> Tuple[Union[np.ndarray, str]]:
         sigma = np.random.uniform(self.min_sigma, self.max_sigma)
         self.augmenter = iaa.GaussianBlur(sigma=sigma)
         return super().apply(image, bounding_boxes)

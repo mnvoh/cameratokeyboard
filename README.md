@@ -46,7 +46,7 @@ Some of its possible applications, if desirable accuracy is achieved include:
 ## Installation
 
 > [!IMPORTANT] 
-> ***NOTE:*** To use GPU, you have to install compatible versions of CUDA and torch.
+> To use GPU, you have to install compatible versions of CUDA and torch.
 >
 > Check out [Get Started Locally](https://pytorch.org/get-started/locally/) for more information.
 
@@ -161,10 +161,11 @@ your camera's pitch to get the best results.
 
 ## Usage
 
-***NOTE:*** If you are using WSL, you cannot access your webcam in that environment. A
-workaround is to use this [Kernel](https://github.com/PINTO0309/wsl2_linux_kernel_usbcam_enable_conf)
-but I have not used it and will not take responsibility for any consequences if you decide to
-use it. Just run the c2k.py in Powershell, ez pz.
+> [!IMPORTANT]
+> If you are using WSL, you cannot access your webcam in that environment. A
+> workaround is to use this [Kernel](https://github.com/PINTO0309/wsl2_linux_kernel_usbcam_enable_conf)
+> but I have not used it and will not take responsibility for any consequences if you decide to
+> use it. Just run the c2k.py in Powershell, ez pz.
 
 ```
 usage: c2k.py [-h] [-e TRAINING_EPOCHS] [-ts WIDTH HEIGHT] [-b TRAINING_BATCH] [-rp RAW_DATASET_PATH]
@@ -262,5 +263,6 @@ For a full list of all authors and contributors, see [the contributors page](htt
 Please feel free to use any of these channels to ask for help or report bugs and security
 vulnerabilities:
 
-1. Discord Server
-2. Github Issues
+1. Github Issues to report issues, bugs, feature requests, etc
+2. Github Discussions to ask questions, troubleshoot your installation, ...
+3. Discord Server

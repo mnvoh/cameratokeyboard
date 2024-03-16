@@ -34,7 +34,7 @@ Issues = "https://github.com/mnvoh/cameratokeyboard/issues"
 cli-name = "c2k:main"
 
 [tool.hatch.build.targets.sdist]
-include = ["c2k.py", "assets/**", "cameratokeyboard/**"]
+include = ["c2k.py", "cameratokeyboard/**"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["c2k.py", "assets", "cameratokeyboard"]
+packages = ["c2k.py", "cameratokeyboard"]

@@ -16,9 +16,11 @@
 ⭐ Star it, make it visible, make it better!
 
 Camera To Keyboard is a python desktop application that allows you to type without a keyboard
-and with just a camera, or at least that's the plan. Currently its accuracy leaves much
-to be desired, so it's a PoC and a long way from being an MVP. But hopefully with your support
-it'll get there.
+and with just a camera, or at least that's the plan. 
+
+> [!NOTE]
+> Currently the accuracy leaves much to be desired, so it's a PoC and a long way from
+> having optimal accuracy. But hopefully with your support it'll get there.
 
 Some of its possible applications, if desirable accuracy is achieved include:
 - In cell phones, just put your phone down in front of you and type
@@ -43,10 +45,20 @@ Some of its possible applications, if desirable accuracy is achieved include:
 
 ## Installation
 
-***NOTE1:*** pip package coming soon...
+> [!IMPORTANT] 
+> ***NOTE:*** To use GPU, you have to install compatible versions of CUDA and torch.
+>
+> Check out [Get Started Locally](https://pytorch.org/get-started/locally/) for more information.
 
-***NOTE2:*** To use GPU, you have to install compatible versions of CUDA and torch. Check out
-[Get Started Locally](https://pytorch.org/get-started/locally/) for more information.
+### Using PIP
+
+Run the following command to install the package from PyPI:
+
+```bash
+python -m pip install --upgrade c2k
+```
+
+### Using Git
 
 1. Clone the repository
 

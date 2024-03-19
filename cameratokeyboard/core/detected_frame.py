@@ -1,6 +1,9 @@
+from functools import cached_property
+import os
 from typing import List
 
 import ultralytics
+import yaml
 
 from cameratokeyboard.config import Config
 from cameratokeyboard.core.calibration import AdjacentNeighborCalibrationStrategy
@@ -27,13 +30,13 @@ class DetectedFrame(
         self._thumbs_min_confidence = config.thumbs_min_confidence
 
         self.calibration_strategy = AdjacentNeighborCalibrationStrategy(
-            history_size=100  # TODO: history_size->CONFIG
+            history_size=100
         )
         self._down_detector = FingerDownDetector(
             self.calibration_strategy, sensitivity=config.key_down_sensitivity
         )
 
-        self._keyboard_layout = KeyboardLayout(layout="qwerty")  # TODO: layout->CONFIG
+        self._keyboard_layout = KeyboardLayout(layout=config.keyboard_layout)
         self._is_calibrating = False
         self._on_calibration_complete = None
 
@@ -132,6 +135,38 @@ class DetectedFrame(
         self._is_calibrating = True
         self._on_calibration_complete = on_calibration_complete
 
+    def _load_model_config(self):
+        path = os.path.join(os.path.dirname(__file__), "..", "c2kmodel.yml")
+        with open(path, "r", encoding="utf-8") as file:
+            return yaml.safe_load(file)
+
+    @cached_property
+    def _finger_class_index(self) -> int:
+        try:
+            return [
+                k for k, v in self._detection_results.names.items() if v == "finger"
+            ][0]
+        except IndexError:
+            return -1
+
+    @cached_property
+    def _thumb_class_index(self) -> int:
+        try:
+            return [
+                k for k, v in self._detection_results.names.items() if v == "thumb"
+            ][0]
+        except IndexError:
+            return -1
+
+    @cached_property
+    def _marker_class_index(self) -> int:
+        try:
+            return [
+                k for k, v in self._detection_results.names.items() if v == "marker"
+            ][0]
+        except IndexError:
+            return -1
+
     def _handle_calibration(self):
         if self.is_calibration_in_progress and self._state == FrameState.VALID:
             self.calibration_strategy.append(self._fingers_and_thumbs)
@@ -149,21 +184,23 @@ class DetectedFrame(
         confidences = [float(i) for i in self._detection_results.boxes.conf]
         boxes = [[float(y) for y in x] for x in self._detection_results.boxes.xywh]
 
-        # TODO: fix the hardcoded class values
         marker_boxes = [
             boxes[i]
             for i, c in enumerate(classes)
-            if c == 2 and confidences[i] > self._markers_min_confidence
+            if c == self._marker_class_index
+            and confidences[i] > self._markers_min_confidence
         ]
         finger_boxes = [
             boxes[i]
             for i, c in enumerate(classes)
-            if c == 0 and confidences[i] > self._fingers_min_confidence
+            if c == self._finger_class_index
+            and confidences[i] > self._fingers_min_confidence
         ]
         thumb_boxes = [
             boxes[i]
             for i, c in enumerate(classes)
-            if c == 1 and confidences[i] > self._thumbs_min_confidence
+            if c == self._thumb_class_index
+            and confidences[i] > self._thumbs_min_confidence
         ]
 
         self._update_markers(marker_boxes)

@@ -68,6 +68,7 @@ def test_parse_args():
         "fingers_min_confidence": 0.5,
         "thumbs_min_confidence": 0.5,
         "key_down_sensitivity": 0.8,
+        "keyboard_layout": "qwerty",
         "repeating_keys_delay": 0.5,
     }
 

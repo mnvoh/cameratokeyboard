@@ -56,7 +56,6 @@ class CalibrationStrategy(ICalibrationStrategy):
         if not self._cache and len(self._historical_coordinates) >= self.history_size:
             self._calculate_calibration_values()
 
-        # TODO: To be silent or not to be? That is the question.
         return self._cache.get(finger, 0)
 
 
@@ -109,7 +108,7 @@ class AdjacentNeighborCalibrationStrategy(CalibrationStrategy):
             self._cache[finger] = sum(distances) / len(distances)
 
 
-class HandbaselineCalibrationStrategy(CalibrationStrategy):
+class HandBaselineCalibrationStrategy(CalibrationStrategy):
     """
     DEPRECATED:
     For the calculation, first a baseline or a reference point for the whole hand is

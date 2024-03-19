@@ -16,7 +16,7 @@ def detection_results():
 
 @pytest.fixture
 def config():
-    return MagicMock()
+    return MagicMock(keyboard_layout="qwerty")
 
 
 @pytest.fixture

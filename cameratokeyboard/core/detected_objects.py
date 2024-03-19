@@ -147,10 +147,10 @@ class DetectedMarkers:  # pylint: disable=too-many-instance-attributes
 
 class DetectedFingersAndThumbs:
     """
+    THIS CLASS WILL BE REPLACED SOON.
+
     Represents the coordinates of the detected fingers and thumbs.
     """
-
-    # TODO: This class is the worst design decision of my life.
 
     def __init__(self, finger_boxes: List[List[float]], thumb_boxes: List[List[float]]):
         self._coordinates = {}
@@ -233,8 +233,6 @@ class DetectedFingersAndThumbs:
         return sum(box[3] for box in self.raw_finger_boxes) / len(self.raw_finger_boxes)
 
     def _identify_fingers(self) -> None:
-        # TODO: Improve this. This is highly unreliable, since if a finger is not
-        #   detected, the indecies will be off
         for finger in Fingers.values():
             finger_index = finger.index if finger.index < 5 else finger.index - 2
 

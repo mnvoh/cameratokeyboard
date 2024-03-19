@@ -21,11 +21,14 @@ OUTLINE_COLORS = {
 }
 FINGER_COLOR = (141, 16, 143)
 THUMB_COLOR = (16, 77, 176)
+DOWN_FINGER_OUTLINE_COLOR = (255, 255, 0)
 MARKER_COLOR = (14, 150, 87)
 COUNTDOWN_COLOR = (255, 255, 255)
 MESSAGE_COLOR = (252, 127, 10)
 CROP_MARGIN = 0.1
 ASYNC_SLEEP = 0.01
+MESSAGE_TIMEOUT = 5.0
+STATE_BOX_BORDER_WIDTH = 8
 
 
 class UI:  # pylint: disable=too-many-instance-attributes
@@ -232,7 +235,7 @@ class UI:  # pylint: disable=too-many-instance-attributes
             "ready to type. The border around this area should be green\n"
             "for the calibration to progress. Calibrating in"
         )  # TODO: I18n
-        self._countdown_ends_at = time.time() + 5.0  # TODO: Unhardcode this value
+        self._countdown_ends_at = time.time() + MESSAGE_TIMEOUT
         self._task_scheduler.add_task_in(5.0, self._start_calibration, unique=True)
 
     def _start_calibration(self):
@@ -250,17 +253,17 @@ class UI:  # pylint: disable=too-many-instance-attributes
         self._countdown_ends_at = None
 
     def _show_calibration_done_message(self):
-        # TODO: I18n
-        # TODO: Unhardcode message timeout value
-        self._message = "Calibration done!"
-        self._task_scheduler.add_task_in(3.0, self._clear_message)
+        self._message = "Calibration done!"  # TODO: I18n
+        self._task_scheduler.add_task_in(MESSAGE_TIMEOUT, self._clear_message)
 
     def _draw_state_box(self):
+        border_width = self._ui_image_surface.get_height() // 30
+
         pygame.draw.rect(
             self._ui_image_surface,
             OUTLINE_COLORS[self._detected_frame_data.state],
             self._ui_image_surface.get_rect(),
-            8,  # TODO: Unhardcode this value
+            border_width,
         )
 
     def _draw_keyboard_boundaries(self):
@@ -305,7 +308,8 @@ class UI:  # pylint: disable=too-many-instance-attributes
         draw_line(bottom_right, bottom_left)
 
     def _draw_landmark_indicators(self):
-        radius = 6  # TODO: Unhardcode this value
+        radius = self._detected_frame_data.current_frame.shape[0] // 80
+
         for finger in self._detected_frame_data.finger_coordinates or []:
             if finger is not None:
                 pygame.draw.circle(
@@ -319,13 +323,12 @@ class UI:  # pylint: disable=too-many-instance-attributes
 
         for down_finger in self._detected_frame_data.down_finger_coordinates or []:
             if down_finger is not None:
-                # TODO: Unhardcode all the values here
                 pygame.draw.circle(
                     self._ui_image_surface,
-                    (0, 255, 255),
+                    DOWN_FINGER_OUTLINE_COLOR,
                     down_finger.xy,
-                    radius + 6,
-                    width=3,
+                    radius * 1.3,
+                    width=radius // 3,
                 )
 
     def _draw_countdown(self):

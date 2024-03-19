@@ -66,32 +66,3 @@ def test_calibration_progress():
         strategy.append(DetectedFingersAndThumbs(finger_boxes, thumb_boxes))
 
     assert strategy.calibration_progress == 1.0
-
-
-# def test_get_calibration_for(self):
-#    strategy = CalibrationStrategy(history_size=5)
-#
-#    # Add some calibration data
-#    strategy.append(
-#        DetectedFingersAndThumbs(
-#            thumb_coordinates=[(0, 0), (1, 1)],
-#            finger_coordinates=[
-#                (0, 0),
-#                (1, 1),
-#                (2, 2),
-#                (3, 3),
-#                (4, 4),
-#                (5, 5),
-#                (6, 6),
-#                (7, 7),
-#            ],
-#        )
-#    )
-#
-#    assert strategy.get_calibration_for(Finger.THUMB) == 0.0
-#    assert strategy.get_calibration_for(Finger.INDEX) == 0.0
-#    assert strategy.get_calibration_for(Finger.MIDDLE) == 0.0
-#    assert strategy.get_calibration_for(Finger.RING) == 0.0
-#    assert strategy.get_calibration_for(Finger.PINKY) == 0.0
-#
-#    # TODO: Add more test cases for different finger calibration values

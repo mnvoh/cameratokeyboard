@@ -184,7 +184,6 @@ class DetectedFrame(
         confidences = [float(i) for i in self._detection_results.boxes.conf]
         boxes = [[float(y) for y in x] for x in self._detection_results.boxes.xywh]
 
-        # TODO: fix the hardcoded class values
         marker_boxes = [
             boxes[i]
             for i, c in enumerate(classes)

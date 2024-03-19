@@ -4,8 +4,6 @@ from typing import Tuple
 import cv2
 import numpy as np
 
-from cameratokeyboard.types import Point
-
 
 def calculate_box_width_without_perspective_distortion(box, reference_box_pos):
     """

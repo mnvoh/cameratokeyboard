@@ -171,6 +171,14 @@ def parse_args(argv) -> dict:
     )
 
     parser.add_argument(
+        "-l",
+        "--keyboard_layout",
+        type=str,
+        default="qwerty",
+        help="The layout of the keyboard. Default: qwerty",
+    )
+
+    parser.add_argument(
         "-rd",
         "--repeating_keys_delay",
         type=float,

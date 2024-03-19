@@ -33,7 +33,7 @@ class DetectedFrame(
             self.calibration_strategy, sensitivity=config.key_down_sensitivity
         )
 
-        self._keyboard_layout = KeyboardLayout(layout="qwerty")  # TODO: layout->CONFIG
+        self._keyboard_layout = KeyboardLayout(layout=config.keyboard_layout)
         self._is_calibrating = False
         self._on_calibration_complete = None
 

@@ -32,6 +32,7 @@ class Config:  # pylint: disable=too-many-instance-attributes
     thumbs_min_confidence: float = 0.3
     key_down_sensitivity: float = 0.75
 
+    keyboard_layout: str = "qwerty"
     repeating_keys_delay: float = 0.5
 
     @classmethod

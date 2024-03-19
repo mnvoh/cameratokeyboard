@@ -1,8 +1,4 @@
-# The distance from the edge of the keyboard to the center of the markers
-distance_from_markers_x: -0.025
-# In the case of y, since the markers are on the same level as the first rows (top or bottom)
-# the value is negative.
-distance_from_markers_y: 0.050
+real_world_dimensions_mm: [275, 90]
 key_height: 0.2
 keys:
   row_1:

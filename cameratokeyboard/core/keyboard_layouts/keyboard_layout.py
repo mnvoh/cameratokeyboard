@@ -103,6 +103,17 @@ class KeyboardLayout:
         self._load_layout()
         self._calculate_key_coordinates()
 
+    @property
+    def real_world_dimensions(self) -> tuple:
+        """
+        The real world dimensions (width, height) of the keyboard in millimeters.
+        """
+        return (
+            None
+            if not self._layout
+            else tuple(self._layout["real_world_dimensions_mm"])
+        )
+
     def convert_coordinates_to_key(self, relative_x: float, relative_y: float) -> str:
         """
         Converts the given coordinates to a key on the keyboard layout.

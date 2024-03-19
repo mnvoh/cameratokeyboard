@@ -10,12 +10,9 @@ from cameratokeyboard.core.detected_objects import (
 )
 from cameratokeyboard.core.finger_down_detector import FingerDownDetector
 from cameratokeyboard.core.keyboard_layouts import KeyboardLayout
-from cameratokeyboard.core.math import (
-    calculate_euler_angles_from_markers,
-    finger_to_keyboard_fractional_coordinates,
-)
+from cameratokeyboard.core.math import finger_to_keyboard_fractional_coordinates
 from cameratokeyboard.interfaces import IDetectedFrameData
-from cameratokeyboard.types import EulerAngle, Fingers, FrameState, Point, RawImage
+from cameratokeyboard.types import Fingers, FrameState, Point, RawImage
 
 
 class DetectedFrame(
@@ -111,16 +108,6 @@ class DetectedFrame(
     @property
     def calibration_progress(self) -> float:
         return self.calibration_strategy.calibration_progress
-
-    @property
-    def camera_angle(self) -> EulerAngle:
-        return calculate_euler_angles_from_markers(
-            self._markers.top_left_marker,
-            self._markers.top_right_marker,
-            self._markers.bottom_right_marker,
-            self._markers.bottom_left_marker,
-            self.frame.shape[1::-1],
-        )
 
     def update(self, detection_results: ultralytics.engine.results.Results):
         """

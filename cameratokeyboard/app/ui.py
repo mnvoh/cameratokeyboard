@@ -175,7 +175,6 @@ class UI:  # pylint: disable=too-many-instance-attributes
         self._draw_countdown()
         self._draw_message()
         self._draw_state_box()
-        self._draw_camera_angles()
 
         self._ui_image.set_image(self._ui_image_surface)
 
@@ -263,26 +262,6 @@ class UI:  # pylint: disable=too-many-instance-attributes
             self._ui_image_surface.get_rect(),
             8,  # TODO: Unhardcode this value
         )
-
-    def _draw_camera_angles(self):
-        angle = self._detected_frame_data.camera_angle
-        margin = self._ui_image_surface.get_height() / 14
-        height = 24
-        texts = [
-            f"Yaw:   {angle.yaw:.2f}°",
-            f"Pitch: {angle.pitch:.2f}°",
-        ]
-
-        font = pygame.font.Font(None, height)
-        for index, text in enumerate(texts):
-            text_surface = font.render(text, True, (255, 255, 255))
-            self._ui_image_surface.blit(
-                text_surface,
-                (
-                    margin,
-                    margin + height * index * 1.1,
-                ),
-            )
 
     def _draw_keyboard_boundaries(self):
         def point_between(p1, p2, length):

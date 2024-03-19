@@ -4,33 +4,7 @@ from typing import Tuple
 import cv2
 import numpy as np
 
-from cameratokeyboard.types import EulerAngle, Point
-
-
-def calculate_euler_angles_from_markers(
-    top_left: Point,
-    top_right: Point,
-    bottom_right: Point,
-    bottom_left: Point,
-    image_size: tuple,
-) -> EulerAngle:
-    """
-    Calculates the euler angles of the camera using the marker coordinates.
-    """
-    if not all([top_left, top_right, bottom_right, bottom_left]):
-        return EulerAngle(yaw=0, pitch=0, roll=0)
-
-    optical_center_y = image_size[1] / 2
-
-    dx = top_right.x - top_left.x
-    dy = top_right.y - top_left.y
-    yaw = np.arctan2(dy, dx)
-
-    d = np.sqrt(dx**2 + dy**2)
-    dy = top_left.y - optical_center_y
-    pitch = np.arctan2(dy, d)
-
-    return EulerAngle(yaw=np.degrees(yaw), pitch=np.degrees(pitch), roll=0)
+from cameratokeyboard.types import Point
 
 
 def calculate_box_width_without_perspective_distortion(box, reference_box_pos):

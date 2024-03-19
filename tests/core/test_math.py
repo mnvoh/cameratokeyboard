@@ -4,7 +4,6 @@ import yaml
 
 from cameratokeyboard.core.detected_objects import DetectedMarkers
 from cameratokeyboard.core.math import (
-    calculate_euler_angles_from_markers,
     calculate_box_width_without_perspective_distortion,
     finger_to_keyboard_fractional_coordinates,
 )
@@ -43,33 +42,6 @@ def _actual_key_bounding_box(key):
                 x += key_data["width"]
 
     return None
-
-
-def test_calc_euler_angles_from_markers():
-    # sad
-    markers = DetectedMarkers(mock_data_for_marker_boxes()[:-1])
-    actual = calculate_euler_angles_from_markers(
-        markers.top_left_marker,
-        markers.top_right_marker,
-        markers.bottom_right_marker,
-        markers.bottom_left_marker,
-        (1280, 720),
-    )
-
-    assert all(x == 0 for x in tuple(actual))
-
-    # happy
-    markers = DetectedMarkers(mock_data_for_marker_boxes())
-    actual = calculate_euler_angles_from_markers(
-        markers.top_left_marker,
-        markers.top_right_marker,
-        markers.bottom_right_marker,
-        markers.bottom_left_marker,
-        (1280, 720),
-    )
-    expected = (0.0, 12.0, 0.0)
-    assert_within_tolerance(actual.yaw, expected[0], 0.5)
-    assert_within_tolerance(actual.pitch, expected[1], 0.5)
 
 
 def test_calculate_box_width_without_perspective_distortion():

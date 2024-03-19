@@ -62,9 +62,7 @@ class App:
             await asyncio.sleep(0.01)
 
     def _broadcast_new_data(self):
-        self._ui.update_data(
-            detected_frame_data=self._detected_frame,
-        )
+        self._ui.update_data(detected_frame_data=self._detected_frame)
 
     def _start_calibration(self, on_calibration_complete: callable):
         if not self._detected_frame or not self._detected_frame.requires_calibration:

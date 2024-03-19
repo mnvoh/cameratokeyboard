@@ -94,21 +94,12 @@ def partial_thumbs(finger_coordinates, thumb_coordinates):
 
 
 @pytest.fixture
-def calculate_euler_angles_from_markers():
-    with patch(
-        "cameratokeyboard.core.detected_frame.calculate_euler_angles_from_markers"
-    ) as mock:
-        yield mock
-
-
-@pytest.fixture
 def detected_frame(
     detected_markers,
     detected_fingers_and_thumbs,
     detection_results,
     config,
     calibration_strategy,
-    calculate_euler_angles_from_markers,
     down_detector,
 ):
     return DetectedFrame(detection_results, config)
@@ -210,26 +201,6 @@ def test_calibration_progress(detected_frame, calibration_strategy):
     assert (
         detected_frame.calibration_progress == calibration_strategy.calibration_progress
     )
-
-
-def test_camera_angle(
-    detected_frame,
-    calculate_euler_angles_from_markers,
-    detected_markers,
-    detection_results,
-):
-    assert (
-        detected_frame.camera_angle == calculate_euler_angles_from_markers.return_value
-    )
-    assert calculate_euler_angles_from_markers.call_args_list == [
-        call(
-            detected_markers.return_value.top_left_marker,
-            detected_markers.return_value.top_right_marker,
-            detected_markers.return_value.bottom_right_marker,
-            detected_markers.return_value.bottom_left_marker,
-            detection_results.orig_img.shape[1::-1],
-        )
-    ]
 
 
 def test_start_calibrating(

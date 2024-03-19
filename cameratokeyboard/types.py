@@ -20,9 +20,6 @@ class FrameState(Enum):
     MISSING_THUMBS = "missing_thumbs"
 
 
-EulerAngle = namedtuple("EulerAngle", ["yaw", "pitch", "roll"])
-
-
 class Point:
     """
     A simple named tuple to represent a point in 2D space.

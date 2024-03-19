@@ -115,13 +115,6 @@ class IDetectedFrameData(ABC):
             float: The calibration progress as a value between 0 and 1.
         """
 
-    @property
-    @abstractmethod
-    def camera_angle(self) -> float:
-        """
-        Returns the Euler angle of the camera.
-        """
-
     @abstractmethod
     def start_calibration(self, on_calibration_complete: callable) -> None:
         """

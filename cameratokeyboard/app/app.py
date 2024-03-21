@@ -1,7 +1,5 @@
 import asyncio
-import sys
 import time
-import traceback
 
 import cv2
 
@@ -29,16 +27,20 @@ class App:
 
         self._detected_frame = None
 
+        self._app_is_running = True
+
     async def run(self):
         """
         The main run loop
         """
         detect_task = asyncio.create_task(self._detect())
         await self._ui.run()
+
+        self._app_is_running = False
         detect_task.cancel()
 
     async def _detect(self):
-        while True:
+        while self._app_is_running:
             success, frame = self._cap.read()
 
             if not success:
@@ -46,18 +48,12 @@ class App:
 
             frame = cv2.flip(frame, 1)
 
-            try:
-                self._detected_frame = self._detector.detect(frame)
-                self._broadcast_new_data()
+            self._detected_frame = self._detector.detect(frame)
+            self._broadcast_new_data()
 
-                if self._detected_frame.down_keys:
-                    for key in self._detected_frame.down_keys:
-                        self._on_key_down(key)
-
-            except Exception as e:  # pylint: disable=broad-except
-                print(e)
-                traceback.print_exc()
-                sys.exit(1)
+            if self._detected_frame.down_keys:
+                for key in self._detected_frame.down_keys:
+                    self._on_key_down(key)
 
             await asyncio.sleep(0.01)
 

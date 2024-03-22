@@ -227,7 +227,7 @@ Please visit [CONTRIBUTING](docs/CONTRIBUTING.md) for more info.
 
 ## Roadmap
 
-- [ ] **Improve the tests** (I'm not gonna sugar coat it, it sucks right now)
+- [x] **Improve the tests**
 - [ ] Establish an actual ML pipeline
 - [ ] Improve the detection accuracy of down fingers
 - [ ] Improve the dataset

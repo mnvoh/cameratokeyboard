@@ -32,6 +32,9 @@ class Point:
         self._y_history = [int(y)]
         self._window_length = 10
 
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
     def distance(self, other):
         """
         Calculates the distance between two points.

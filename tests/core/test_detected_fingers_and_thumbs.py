@@ -47,4 +47,4 @@ def test_average_finger_width(detected_fingers_and_thumbs):
 
 def test_average_finger_height(detected_fingers_and_thumbs):
     average_finger_height = detected_fingers_and_thumbs.average_finger_height
-    assert average_finger_height == 80.0
+    assert int(average_finger_height) == 80

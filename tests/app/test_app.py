@@ -86,7 +86,6 @@ async def test_app_run_failed_frame(mock_cap_failed, app, mock_ui_run):
     app._ui.update_data.assert_not_called()
 
 
-@pytest.mark.asyncio
 def test_key_press_allowed():
     throttler = RepeatingKeysThrottler(delay=0.5)
 

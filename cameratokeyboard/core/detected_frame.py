@@ -1,9 +1,7 @@
 from functools import cached_property
-import os
 from typing import List
 
 import ultralytics
-import yaml
 
 from cameratokeyboard.config import Config
 from cameratokeyboard.core.calibration import AdjacentNeighborCalibrationStrategy
@@ -135,37 +133,26 @@ class DetectedFrame(
         self._is_calibrating = True
         self._on_calibration_complete = on_calibration_complete
 
-    def _load_model_config(self):
-        path = os.path.join(os.path.dirname(__file__), "..", "c2kmodel.yml")
-        with open(path, "r", encoding="utf-8") as file:
-            return yaml.safe_load(file)
-
     @cached_property
     def _finger_class_index(self) -> int:
-        try:
-            return [
-                k for k, v in self._detection_results.names.items() if v == "finger"
-            ][0]
-        except IndexError:
-            return -1
+        for k, v in self._detection_results.names.items():
+            if v == "finger":
+                return k
+        return -1
 
     @cached_property
     def _thumb_class_index(self) -> int:
-        try:
-            return [
-                k for k, v in self._detection_results.names.items() if v == "thumb"
-            ][0]
-        except IndexError:
-            return -1
+        for k, v in self._detection_results.names.items():
+            if v == "thumb":
+                return k
+        return -1
 
     @cached_property
     def _marker_class_index(self) -> int:
-        try:
-            return [
-                k for k, v in self._detection_results.names.items() if v == "marker"
-            ][0]
-        except IndexError:
-            return -1
+        for k, v in self._detection_results.names.items():
+            if v == "marker":
+                return k
+        return -1
 
     def _handle_calibration(self):
         if self.is_calibration_in_progress and self._state == FrameState.VALID:
@@ -202,7 +189,6 @@ class DetectedFrame(
             if c == self._thumb_class_index
             and confidences[i] > self._thumbs_min_confidence
         ]
-
         self._update_markers(marker_boxes)
         self._update_fingers_and_thumbs(finger_boxes, thumb_boxes)
 

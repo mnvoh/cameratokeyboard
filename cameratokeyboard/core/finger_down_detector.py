@@ -40,10 +40,10 @@ class FingerDownDetector:
             fingers_and_thumbs, finger
         )
 
-        if not current_value or not calibration_value:
+        if current_value is None or calibration_value is None:
             return False
 
-        deviation = current_value - calibration_value
+        delta = current_value - calibration_value
 
         threshold = (
             fingers_and_thumbs.average_finger_height * 2 * (1 - self._sensitivity)
@@ -55,4 +55,4 @@ class FingerDownDetector:
             c.y < coordinates.y for c in other_coordinates if c is not None
         )
 
-        return lower_than_all_other and deviation > threshold
+        return lower_than_all_other and delta > threshold

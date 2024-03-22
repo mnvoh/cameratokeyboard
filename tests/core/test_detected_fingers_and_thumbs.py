@@ -3,7 +3,6 @@
 import pytest
 from cameratokeyboard.core.detected_objects import (
     DetectedFingersAndThumbs,
-    Fingers,
     Point,
 )
 

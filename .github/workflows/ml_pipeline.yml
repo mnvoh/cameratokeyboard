@@ -33,4 +33,5 @@ jobs:
 
       - name: Train and Upload to S3
         run: |
+          pip install -r requirements.txt
           python ci_train_and_upload.py

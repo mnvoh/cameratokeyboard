@@ -11,7 +11,7 @@ def test_config_defaults():
     assert config.training_image_size == (640, 640)
     assert config.training_batch == -1
     assert config.raw_dataset_path == "raw_dataset"
-    assert config.dataset_path == "../datasets/c2k"
+    assert config.dataset_path == "datasets/c2k"
     assert config.split_paths == ("train", "test", "val")
     assert config.split_ratios == (0.7, 0.15, 0.15)
     assert config.image_extension == "jpg"

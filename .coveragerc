@@ -3,6 +3,6 @@ show_missing=true
 
 [run]
 omit =
-    cameratokeyboard/model/*
     cameratokeyboard/app/ui.py
+    ci_train_and_upload.py
     */__init__.py

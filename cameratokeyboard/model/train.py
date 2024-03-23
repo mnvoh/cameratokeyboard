@@ -4,7 +4,7 @@
 import os
 import shutil
 
-from ultralytics import YOLO
+from ultralytics import YOLO, settings
 
 from cameratokeyboard.config import Config
 from cameratokeyboard.model.partitioner import DataPartitioner
@@ -21,6 +21,8 @@ class Trainer:
         self.dataset_path = config.dataset_path
         self.split_paths = config.split_paths
 
+        settings.update({"datasets_dir": os.path.join(os.getcwd(), "datasets")})
+
     def run(self):
         self._parition_data()
         self._train()
@@ -35,7 +37,7 @@ class Trainer:
         ):
             return False
 
-        raw_files = set(os.listdir(self.raw_data_path))
+        raw_files = set(os.listdir(self.raw_dataset_path))
         files = set(
             os.listdir(os.path.join(self.dataset_path, "images", "train"))
             + os.listdir(os.path.join(self.dataset_path, "images", "test"))
@@ -48,7 +50,7 @@ class Trainer:
             return
 
         DataPartitioner(self.config).partition()
-        ImageAugmenterStrategy().run()
+        ImageAugmenterStrategy(self.config).run()
 
     def _train(self):
         model = YOLO("yolov8n.yaml")

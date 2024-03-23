@@ -43,14 +43,15 @@ class DataPartitioner:
         self._read_files_list()
         self._verify_integrity()
         self._delete_existing_data()
+        self._create_directories()
 
         self._partition_files()
 
     def _read_files_list(self) -> None:
         LOGGER.info("Reading files list.")
 
-        self._files_list = set(
-            f.split(".")[0] for f in os.listdir(self._raw_dataset_path)
+        self._files_list = list(
+            set(f.split(".")[0] for f in os.listdir(self._raw_dataset_path))
         )
         shuffle(self._files_list)
 
@@ -77,6 +78,13 @@ class DataPartitioner:
 
         LOGGER.info("Deleting existing data.")
         shutil.rmtree(self._dataset_path)
+
+    def _create_directories(self) -> None:
+        LOGGER.info("Creating directories.")
+
+        for split_name in self._split_paths:
+            os.makedirs(os.path.join(self._dataset_path, "images", split_name))
+            os.makedirs(os.path.join(self._dataset_path, "labels", split_name))
 
     def _partition_files(self) -> None:
         LOGGER.info("Partitioning files")

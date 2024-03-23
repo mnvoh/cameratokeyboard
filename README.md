@@ -9,7 +9,6 @@
   ![PyPI - Version](https://img.shields.io/pypi/v/c2k)
   [![Tests](https://img.shields.io/github/actions/workflow/status/mnvoh/cameratokeyboard/test.yml)](https://github.com/mnvoh/cameratokeyboard/actions)
   ![Codecov](https://codecov.io/gh/mnvoh/cameratokeyboard/graph/badge.svg?token=Q7P8AT45OF)
-  [![Discord](https://img.shields.io/discord/1218354858466218015)](https://discord.gg/6mgHzQM6N8)
   [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 </h1>
 

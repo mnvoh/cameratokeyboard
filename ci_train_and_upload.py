@@ -13,7 +13,6 @@ from cameratokeyboard.model.train import Trainer
 REGION = os.environ["AWS_REGION"]
 BUCKET_NAME = os.environ["AWS_BUCKET_NAME"]
 RAW_DATASET_PATH = "raw_dataset"
-RUNS_DIR = os.path.join("runs", "detect")
 REMOTE_MODELS_DIR = "models"
 
 logger = get_logger()
@@ -48,17 +47,11 @@ def train() -> str:
     logger.info("Training the model")
 
     config = Config()
-    config.processing_device = "cpu"
     trainer = Trainer(config)
 
-    trainer.run()
+    results = trainer.run()
 
-    def sort_key(p):
-        return os.path.getctime(os.path.join(RUNS_DIR, p))
-
-    last_created_dir = max(os.listdir(RUNS_DIR), key=sort_key)
-
-    return os.path.join(RUNS_DIR, last_created_dir, "weights", "best.pt")
+    return os.path.join(results.save_dir, "weights", "best.pt")
 
 
 def upload_model(path: str, version: str):

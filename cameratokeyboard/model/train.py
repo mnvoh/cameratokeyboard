@@ -23,7 +23,7 @@ class Trainer:
 
     def run(self):
         self._parition_data()
-        self._train()
+        return self._train()
 
     def _are_training_data_up_to_date(self):
         if not os.path.exists(self.dataset_path):
@@ -64,3 +64,5 @@ class Trainer:
         model_path = os.path.join(results.save_dir, "weights", "best.pt")
         target_model_path = os.path.join("cameratokeyboard", "model.pt")
         shutil.copyfile(model_path, target_model_path)
+
+        return results

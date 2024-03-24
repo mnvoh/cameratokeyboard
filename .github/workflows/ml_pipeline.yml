@@ -24,6 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Train
+        run: |
+          pip install -r requirements.txt
+          python ci_train_and_upload.py train
+
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -31,7 +36,6 @@ jobs:
           role-session-name: GithubActionsC2KSession
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Train and Upload to S3
+      - name: Upload to S3
         run: |
-          pip install -r requirements.txt
-          python ci_train_and_upload.py
+          python ci_train_and_upload.py upload

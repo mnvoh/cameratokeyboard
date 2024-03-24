@@ -47,6 +47,7 @@ def train() -> str:
     logger.info("Training the model")
 
     config = Config()
+    config.processing_device = "cpu"
     trainer = Trainer(config)
 
     results = trainer.run()

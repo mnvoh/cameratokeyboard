@@ -24,6 +24,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ env.AWS_ROLE }}
+          role-session-name: GithubActionsC2KSession
+          aws-region: ${{ env.AWS_REGION }}
+
       - name: Train
         run: |
           pip install -r requirements.txt

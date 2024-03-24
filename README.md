@@ -248,9 +248,10 @@ _For more information and to report security issues, please refer to our [securi
 
 ## License
 
-This project is licensed under the **GNU General Public License v3**.
-
+This project's code is licensed under the **GNU General Public License v3**.
 See [LICENSE](LICENSE.md) for more information.
+
+The dataset and its derivatives (such as the trained model) are licensed under **CC BY-NC-SA 4.0**. See [LICENSE-dataset](LICENSE-dataset.md)
 
 ## Authors & contributors
 

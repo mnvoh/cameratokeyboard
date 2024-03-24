@@ -5,9 +5,9 @@ from random import shuffle
 import shutil
 
 from cameratokeyboard.config import Config
-from cameratokeyboard.logger import getLogger
+from cameratokeyboard.logger import get_logger
 
-LOGGER = getLogger()
+LOGGER = get_logger()
 
 
 class DataPartitioner:

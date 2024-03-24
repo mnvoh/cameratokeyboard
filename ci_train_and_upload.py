@@ -1,49 +1,52 @@
 # pylint: disable=missing-function-docstring
 
+import hashlib
 import os
-import subprocess
+import sys
 
 import boto3
 
 from cameratokeyboard.config import Config
+from cameratokeyboard.logger import get_logger
 from cameratokeyboard.model.train import Trainer
 
 REGION = os.environ["AWS_REGION"]
 BUCKET_NAME = os.environ["AWS_BUCKET_NAME"]
+RAW_DATASET_PATH = "raw_dataset"
 RUNS_DIR = os.path.join("runs", "detect")
 REMOTE_MODELS_DIR = "models"
-REMOTE_MODEL_NAME_PREFIX = "c2k_model"
-VERSION_LENGTH = 7
 
+logger = get_logger()
 s3_client = boto3.client("s3", region_name=REGION)
 
 
-def are_there_new_data():
-    diff_output = subprocess.check_output(
-        ["git", "diff", "--name-only", "HEAD~1..HEAD"]
-    )
-    changed_files = diff_output.decode("utf-8").splitlines()
-
-    for filename in changed_files:
-        if filename.startswith("raw_dataset"):
-            return True
-
-    return False
-
-
 def get_next_version():
-    objects = s3_client.list_objects_v2(Bucket=BUCKET_NAME, Prefix="models/c2k_model_")
-    models = [x["Key"] for x in objects["Contents"]]
-    models = [x.split(".")[0] for x in models]
-    models = [x.split("/")[-1] for x in models]
-    model_versions = [int(x.split("_")[-1]) for x in models]
+    logger.info("Calculating the checksum of the current dataset")
 
-    next_version = sorted(model_versions)[-1] + 1
+    if not os.path.exists(RAW_DATASET_PATH) or not os.listdir(RAW_DATASET_PATH):
+        logger.info("Raw dataset not found.")
+        return None
 
-    return f"{next_version:07d}"
+    checksums = []
+    for file in os.listdir(RAW_DATASET_PATH):
+        with open(os.path.join(RAW_DATASET_PATH, file), "rb") as f:
+            checksums.append(hashlib.md5(f.read()).hexdigest())
+
+    return hashlib.md5("".join(checksums).encode("utf-8")).hexdigest()
+
+
+def version_already_exists(version: str) -> bool:
+    logger.info("Checking for changes")
+
+    objects = s3_client.list_objects_v2(
+        Bucket=BUCKET_NAME, Prefix=f"models/{version}.pt"
+    )
+    return objects and objects.get("KeyCount", 0) > 0
 
 
 def train() -> str:
+    logger.info("Training the model")
+
     config = Config()
     config.processing_device = "cpu"
     trainer = Trainer(config)
@@ -51,39 +54,43 @@ def train() -> str:
     trainer.run()
 
     def sort_key(p):
-        os.path.getctime(os.path.join(RUNS_DIR, p))
+        return os.path.getctime(os.path.join(RUNS_DIR, p))
 
     last_created_dir = max(os.listdir(RUNS_DIR), key=sort_key)
 
     return os.path.join(RUNS_DIR, last_created_dir, "weights", "best.pt")
 
 
-def upload_model(path: str):
-    existing_objects = s3_client.list_objects_v2(
-        Bucket=BUCKET_NAME, Prefix=f"{REMOTE_MODELS_DIR}/{REMOTE_MODEL_NAME_PREFIX}"
+def upload_model(path: str, version: str):
+    remote_model_name = f"{version}.pt"
+    logger.info(
+        "Uploading %s to s3://%s/%s/%s",
+        path,
+        BUCKET_NAME,
+        REMOTE_MODELS_DIR,
+        remote_model_name,
     )
-    try:
-        existing_model_names = [
-            x["Key"].split(".")[0] for x in existing_objects["Contents"]
-        ]
-        last_model_version = sorted(
-            [x.split("_")[-1] for x in existing_model_names], reverse=True
-        )[0]
-    except (KeyError, StopIteration):
-        last_model_version = 0
 
-    next_version = int(last_model_version) + 1
-    next_model_name = f"{REMOTE_MODEL_NAME_PREFIX}_{next_version:0{VERSION_LENGTH}d}.pt"
-
-    s3_client.upload_file(path, BUCKET_NAME, f"{REMOTE_MODELS_DIR}/{next_model_name}")
+    s3_client.upload_file(path, BUCKET_NAME, f"{REMOTE_MODELS_DIR}/{remote_model_name}")
 
 
 def main():
-    if not are_there_new_data():
+    current_version = get_next_version()
+
+    if not current_version:
+        sys.exit(0)
+
+    logger.info("Current data version: %s", current_version)
+    exists = version_already_exists(current_version)
+
+    if exists:
+        logger.info(
+            "Model version %s already exists. Skipping the pipeline.", current_version
+        )
         return
 
     trained_model_path = train()
-    upload_model(trained_model_path)
+    upload_model(trained_model_path, current_version)
 
 
 if __name__ == "__main__":

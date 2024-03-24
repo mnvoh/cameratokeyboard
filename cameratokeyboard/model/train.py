@@ -14,9 +14,7 @@ from cameratokeyboard.model.augmenter import ImageAugmenterStrategy
 class Trainer:
     def __init__(self, config: Config) -> None:
         self.config = config
-        self.epochs = config.training_epochs
-        self.image_size = config.training_image_size
-        self.batch = config.training_batch
+
         self.raw_dataset_path = config.raw_dataset_path
         self.dataset_path = config.dataset_path
         self.split_paths = config.split_paths
@@ -57,9 +55,10 @@ class Trainer:
 
         results = model.train(
             data=os.path.join("cameratokeyboard", "c2kmodel.yml"),
-            imgsz=self.image_size,
-            epochs=self.epochs,
-            batch=self.batch,
+            imgsz=self.config.training_image_size,
+            epochs=self.config.training_epochs,
+            batch=self.config.training_batch,
+            device=self.config.processing_device,
         )
 
         model_path = os.path.join(results.save_dir, "weights", "best.pt")

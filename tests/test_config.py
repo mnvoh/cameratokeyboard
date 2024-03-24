@@ -7,7 +7,7 @@ from cameratokeyboard.config import Config
 
 def test_config_defaults():
     config = Config()
-    assert config.training_epochs == 40
+    assert config.training_epochs == 20
     assert config.training_image_size == (640, 640)
     assert config.training_batch == -1
     assert config.raw_dataset_path == "raw_dataset"

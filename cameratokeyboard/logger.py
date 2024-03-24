@@ -1,12 +1,18 @@
 import logging
 import colorlog
 
+LOGGER_NAME = "c2k"
 
-def getLogger() -> colorlog.getLogger:
+
+def get_logger() -> colorlog.getLogger:
     """
     Gets the default logger for the application
     """
-    logger = colorlog.getLogger("c2k")
+    logger = colorlog.getLogger(LOGGER_NAME)
+
+    if logger.hasHandlers():
+        return logger
+
     logger.setLevel(logging.DEBUG)
     handler = colorlog.StreamHandler()
     handler.setFormatter(

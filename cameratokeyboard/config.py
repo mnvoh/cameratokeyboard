@@ -10,7 +10,7 @@ class Config:  # pylint: disable=too-many-instance-attributes
     Application wide configuration.
     """
 
-    training_epochs: int = 40
+    training_epochs: int = 20
     training_image_size: tuple = (640, 640)
     training_batch: int = -1
     raw_dataset_path: str = "raw_dataset"

@@ -10,16 +10,14 @@ from tqdm import tqdm
 
 from cameratokeyboard.config import Config
 from cameratokeyboard.model import augmenters, ImageAugmenter
-from cameratokeyboard.logger import getLogger
+from cameratokeyboard.logger import get_logger
 
 
-LOGGER = getLogger()
+LOGGER = get_logger()
 STRATEGIES = [
     "Scale:0.5,1.2",
     "Rotation:-45,45",
-    "VerticalFlip",
     "HorizontalFlip",
-    "Blur:2.5,6.0",
     "Shear:-30,30",
     "Perspective:0.1,0.2",
 ]

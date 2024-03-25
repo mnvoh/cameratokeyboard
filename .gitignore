@@ -8,3 +8,4 @@
 yolov8n.pt
 .coverage
 /dist
+/cameratokeyboard/model.pt

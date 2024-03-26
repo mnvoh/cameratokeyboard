@@ -1,3 +1,4 @@
+# pylint: disable=missing-function-docstring
 import asyncio
 import sys
 
@@ -5,13 +6,15 @@ import sys
 from cameratokeyboard.config import Config
 from cameratokeyboard.args import parse_args
 from cameratokeyboard.app import App
+from cameratokeyboard.model.model_downloader import ModelDownloader
 
 args = parse_args(sys.argv[1:])
 
 
 async def async_main():
-    app = App(Config.from_args(args))
-    await app.run()
+    config = Config.from_args(args)
+    ModelDownloader(config).run()
+    await App(config).run()
 
 
 def main():

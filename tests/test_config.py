@@ -1,11 +1,19 @@
 # pylint: disable=missing-function-docstring
-
 import os
+from unittest.mock import patch
+
+import platformdirs
 
 from cameratokeyboard.config import Config
 
 
-def test_config_defaults():
+@patch("cameratokeyboard.config.os.path.getctime")
+@patch("cameratokeyboard.config.os.listdir")
+def test_config_defaults(listdir_mock, getctime_mock):
+    model_name = "latest_model.pt"
+    listdir_mock.return_value = [model_name]
+    getctime_mock.return_value = 0
+
     config = Config()
     assert config.training_epochs == 20
     assert config.training_image_size == (640, 640)
@@ -16,7 +24,6 @@ def test_config_defaults():
     assert config.split_ratios == (0.7, 0.15, 0.15)
     assert config.image_extension == "jpg"
     assert config.iou == 0.5
-    assert config.model_path == os.path.join("cameratokeyboard", "model.pt")
     assert config.resolution == (1280, 720)
     assert config.app_fps == 30
     assert config.video_input_device == 0
@@ -26,6 +33,10 @@ def test_config_defaults():
     assert config.thumbs_min_confidence == 0.3
     assert config.key_down_sensitivity == 0.75
     assert config.repeating_keys_delay == 0.5
+    assert config.models_dir == os.path.join(
+        platformdirs.user_data_dir(), "c2k", "models"
+    )
+    assert config.model_path == os.path.join(config.models_dir, model_name)
 
 
 def test_config_builder():

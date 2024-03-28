@@ -48,8 +48,8 @@ class DataPartitioner:
     def _read_files_list(self) -> None:
         LOGGER.info("Reading files list.")
 
-        self._files_list = list(
-            set(f.split(".")[0] for f in os.listdir(self._raw_dataset_path))
+        self._files_list = sorted(
+            list(set(f.split(".")[0] for f in os.listdir(self._raw_dataset_path)))
         )
         shuffle(self._files_list)
 

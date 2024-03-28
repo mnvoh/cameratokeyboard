@@ -1,6 +1,3 @@
-# DEPRECATED: This and all related files will be removed once we move to the new data pipeline
-# pylint: skip-file
-
 import os
 
 from ultralytics import YOLO, settings
@@ -11,6 +8,14 @@ from cameratokeyboard.model.augmenter import ImageAugmenterStrategy
 
 
 class Trainer:
+    """
+    The Trainer class is responsible for training the model using the provided configuration.
+
+    Args:
+        config (Config): The configuration object containing the necessary parameters for training.
+
+    """
+
     def __init__(self, config: Config) -> None:
         self.config = config
 
@@ -21,6 +26,14 @@ class Trainer:
         settings.update({"datasets_dir": os.path.join(os.getcwd(), "datasets")})
 
     def run(self):
+        """
+        Runs the training process.
+
+        Returns:
+            results (ultralytics.utils.metrics.DetMetrics): A dictionary containing the
+                training results.
+
+        """
         self._parition_data()
         return self._train()
 

@@ -1,5 +1,3 @@
-# DEPRECATED: This and all related files will be removed once we move to the new data pipeline
-
 import os
 from random import shuffle
 import shutil

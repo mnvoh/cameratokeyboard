@@ -1,4 +1,6 @@
+import hashlib
 import os
+import shutil
 
 from ultralytics import YOLO, settings
 
@@ -13,11 +15,18 @@ class Trainer:
 
     Args:
         config (Config): The configuration object containing the necessary parameters for training.
+        target_path (str): Copies the trained model to this location when done. If None,
+            defaults to the `models_dir` config value.
 
     """
 
-    def __init__(self, config: Config) -> None:
+    def __init__(self, config: Config, target_path: str = None) -> None:
         self.config = config
+
+        if target_path is None:
+            self._target_path = config.models_dir
+        else:
+            self._target_path = target_path
 
         self.raw_dataset_path = config.raw_dataset_path
         self.dataset_path = config.dataset_path
@@ -27,15 +36,30 @@ class Trainer:
 
     def run(self):
         """
-        Runs the training process.
-
-        Returns:
-            results (ultralytics.utils.metrics.DetMetrics): A dictionary containing the
-                training results.
-
+        Runs the training process and copies the trained model to target_path when done.
         """
         self._parition_data()
-        return self._train()
+        self._train()
+
+    def calc_next_version(self):
+        """
+        Calculates the next version based on the checksums of the files in the raw dataset path.
+
+        Returns:
+            str: The MD5 hash of the concatenated checksums of all files in the raw dataset path.
+                 Returns None if the raw dataset path is empty or does not exist.
+        """
+        if not os.path.exists(self.config.raw_dataset_path) or not os.listdir(
+            self.config.raw_dataset_path
+        ):
+            return None
+
+        checksums = []
+        for file in os.listdir(self.config.raw_dataset_path):
+            with open(os.path.join(self.config.raw_dataset_path, file), "rb") as f:
+                checksums.append(hashlib.md5(f.read()).hexdigest())
+
+        return hashlib.md5("".join(checksums).encode("utf-8")).hexdigest()
 
     def _parition_data(self):
         DataPartitioner(self.config).partition()
@@ -52,4 +76,7 @@ class Trainer:
             device=self.config.processing_device,
         )
 
-        return results
+        version = self.calc_next_version()
+        model_path = os.path.join(results.save_dir, "weights", "best.pt")
+        os.makedirs(self._target_path, exist_ok=True)
+        shutil.copyfile(model_path, os.path.join(self._target_path, f"{version}.pt"))

@@ -1,8 +1,6 @@
 # pylint: disable=missing-function-docstring
 
-import hashlib
 import os
-import shutil
 import sys
 import tempfile
 
@@ -13,25 +11,12 @@ from cameratokeyboard.logger import get_logger
 from cameratokeyboard.model.train import Trainer
 
 logger = get_logger()
-config = Config()
+config = Config(processing_device="cpu")
 s3_client = boto3.client("s3", region_name=config.remote_models_bucket_region)
 
+MODEL_TARGET_DIR = os.path.join(tempfile.tempdir, "c2k")
 
-def get_next_version():
-    logger.info("Calculating the checksum of the current dataset")
-
-    if not os.path.exists(config.raw_dataset_path) or not os.listdir(
-        config.raw_dataset_path
-    ):
-        logger.info("Raw dataset not found.")
-        return None
-
-    checksums = []
-    for file in os.listdir(config.raw_dataset_path):
-        with open(os.path.join(config.raw_dataset_path, file), "rb") as f:
-            checksums.append(hashlib.md5(f.read()).hexdigest())
-
-    return hashlib.md5("".join(checksums).encode("utf-8")).hexdigest()
+trainer = Trainer(config, target_path=MODEL_TARGET_DIR)
 
 
 def version_already_exists(version: str) -> bool:
@@ -44,7 +29,7 @@ def version_already_exists(version: str) -> bool:
 
 
 def train():
-    version = get_next_version()
+    version = trainer.calc_next_version()
 
     if not version:
         return
@@ -57,23 +42,19 @@ def train():
 
     logger.info("Training the model")
 
-    config.processing_device = "cpu"
-    trainer = Trainer(config)
+    trainer.run()
 
-    results = trainer.run()
-
-    model_path = os.path.join(results.save_dir, "weights", "best.pt")
-    dest_path = os.path.join(tempfile.tempdir, "c2k")
-    os.makedirs(dest_path, exist_ok=True)
-    shutil.copyfile(model_path, os.path.join(dest_path, f"{version}.pt"))
-
-    logger.info("Saved trained model to %s/%s.pt", dest_path, version)
+    logger.info("Saved trained model to %s/%s.pt", MODEL_TARGET_DIR, version)
 
 
 def upload_model():
-    version = get_next_version()
+    version = trainer.calc_next_version()
     model_name = f"{version}.pt"
-    model_path = os.path.join(tempfile.tempdir, "c2k", model_name)
+    model_path = os.path.join(MODEL_TARGET_DIR, model_name)
+
+    if not os.path.exists(model_path):
+        return
+
     logger.info(
         "Uploading %s to s3://%s/%s%s",
         model_path,

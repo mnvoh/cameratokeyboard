@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "c2k"
-version = "0.0.2"
+version = "0.0.3"
 authors = [{ name = "mnvoh", email = "milad@nozary.com" }]
 description = "Acts as a keyboard by looking at your hands!"
 readme = "README.md"
@@ -15,15 +15,16 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "imgaug",
     "colorlog",
-    "pyyaml",
-    "opencv-contrib-python",
+    "imgaug",
     "numpy",
-    "tqdm",
-    "ultralytics",
+    "opencv-contrib-python",
+    "requests",
     "pygame-ce",
     "pygame-gui",
+    "pyyaml",
+    "tqdm",
+    "ultralytics",
 ]
 
 [project.urls]

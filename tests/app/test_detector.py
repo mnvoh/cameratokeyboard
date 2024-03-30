@@ -4,6 +4,13 @@ import pytest
 
 from cameratokeyboard.app.detector import Detector
 
+from tests.fixtures import s3_objects_response
+
+MODELS_DIR = "/path/to/models"
+BUCKET_NAME = "bucket_name"
+REGION = "eu-west-2"
+PREFIX = "models/"
+
 
 class YoloMock:
     def __init__(self, *args, **kwargs):
@@ -14,13 +21,24 @@ class YoloMock:
 
 
 @pytest.fixture
-def config():
-    return Mock(iou=0.5, processing_device=0)
+def base_config():
+    return {
+        "iou": 0.5,
+        "models_dir": MODELS_DIR,
+        "remote_models_bucket_name": BUCKET_NAME,
+        "remote_models_bucket_region": REGION,
+        "remote_models_prefix": PREFIX,
+    }
 
 
 @pytest.fixture
-def config_with_cpu():
-    return Mock(iou=0.5, processing_device="cpu")
+def config(base_config):
+    return Mock(processing_device=0, **base_config)
+
+
+@pytest.fixture
+def config_with_cpu(base_config):
+    return Mock(processing_device="cpu", **base_config)
 
 
 @pytest.fixture
@@ -45,6 +63,13 @@ def detected_frame():
 def detected_frame_class():
     with patch("cameratokeyboard.app.detector.DetectedFrame") as detected_frame_class:
         yield detected_frame_class
+
+
+@pytest.fixture(autouse=True)
+def requests_mock():
+    with patch("cameratokeyboard.model.model_downloader.requests") as mock:
+        mock.get.return_value = MagicMock(content=s3_objects_response.encode("utf-8"))
+        yield mock
 
 
 def test_detect(yolo_mock, config, frame, detected_frame_class):

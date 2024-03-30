@@ -1,6 +1,4 @@
 # pylint: disable=missing-function-docstring,redefined-outer-name
-
-from datetime import datetime, timedelta
 from unittest.mock import call, patch, MagicMock
 
 import pytest

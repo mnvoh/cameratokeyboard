@@ -3,6 +3,7 @@ colorlog ~= 4.6
 imgaug ~= 0.4
 numpy ~= 1.26
 opencv-contrib-python ~= 4.9
+platformdirs ~= 4.2
 pygame-ce ~= 2.4
 pygame-gui ~= 0.6
 pyyaml ~= 6.0

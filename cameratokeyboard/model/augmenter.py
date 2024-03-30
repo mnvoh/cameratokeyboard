@@ -1,5 +1,4 @@
-# DEPRECATED: This and all related files will be removed once we move to the new data pipeline
-# pylint: skip-file
+# pylint: disable=too-many-locals
 
 from ast import literal_eval
 import os
@@ -24,16 +23,37 @@ STRATEGIES = [
 
 
 class ImageAugmenterStrategy:
+    """
+    A class representing an image augmentation strategy.
+
+    Attributes:
+        augmentation_strategies (List[List[ImageAugmenter]]): A list of lists of
+            ImageAugmenter objects representing the augmentation strategies to be applied.
+        images_path (str): The path to the directory containing the input images.
+        labels_path (str): The path to the directory containing the label files.
+        files (List[str]): A list of filenames in the images_path directory.
+    """
+
     def __init__(self, config: Config) -> None:
+        """
+        Initializes an ImageAugmenterStrategy object.
+
+        Args:
+            config (Config): The configuration object containing the necessary parameters.
+
+        """
         self.augmentation_strategies = []
 
         self._resolve_strategies()
         train_path = config.split_paths[0]
         self.images_path = os.path.join(config.dataset_path, "images", train_path)
         self.labels_path = os.path.join(config.dataset_path, "labels", train_path)
-        self.files = [f for f in os.listdir(self.images_path)]
+        self.files = list(os.listdir(self.images_path))
 
     def run(self) -> None:
+        """
+        Runs the strategy
+        """
         for strategy in self.augmentation_strategies:
             self._run_strategy(strategy)
 

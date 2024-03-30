@@ -1,6 +1,4 @@
-# DEPRECATED: This and all related files will be removed once we move to the new data pipeline
-# pylint: skip-file
-
+import hashlib
 import os
 import shutil
 
@@ -12,8 +10,23 @@ from cameratokeyboard.model.augmenter import ImageAugmenterStrategy
 
 
 class Trainer:
-    def __init__(self, config: Config) -> None:
+    """
+    The Trainer class is responsible for training the model using the provided configuration.
+
+    Args:
+        config (Config): The configuration object containing the necessary parameters for training.
+        target_path (str): Copies the trained model to this location when done. If None,
+            defaults to the `models_dir` config value.
+
+    """
+
+    def __init__(self, config: Config, target_path: str = None) -> None:
         self.config = config
+
+        if target_path is None:
+            self._target_path = config.models_dir
+        else:
+            self._target_path = target_path
 
         self.raw_dataset_path = config.raw_dataset_path
         self.dataset_path = config.dataset_path
@@ -22,31 +35,33 @@ class Trainer:
         settings.update({"datasets_dir": os.path.join(os.getcwd(), "datasets")})
 
     def run(self):
+        """
+        Runs the training process and copies the trained model to target_path when done.
+        """
         self._parition_data()
-        return self._train()
+        self._train()
 
-    def _are_training_data_up_to_date(self):
-        if not os.path.exists(self.dataset_path):
-            return False
+    def calc_next_version(self):
+        """
+        Calculates the next version based on the checksums of the files in the raw dataset path.
 
-        if any(
-            not os.path.exists(os.path.join(self.dataset_path, "images", split_name))
-            for split_name in self.split_paths
+        Returns:
+            str: The MD5 hash of the concatenated checksums of all files in the raw dataset path.
+                 Returns None if the raw dataset path is empty or does not exist.
+        """
+        if not os.path.exists(self.config.raw_dataset_path) or not os.listdir(
+            self.config.raw_dataset_path
         ):
-            return False
+            return None
 
-        raw_files = set(os.listdir(self.raw_dataset_path))
-        files = set(
-            os.listdir(os.path.join(self.dataset_path, "images", "train"))
-            + os.listdir(os.path.join(self.dataset_path, "images", "test"))
-            + os.listdir(os.path.join(self.dataset_path, "images", "val"))
-        )
-        return raw_files == files
+        checksums = []
+        for file in os.listdir(self.config.raw_dataset_path):
+            with open(os.path.join(self.config.raw_dataset_path, file), "rb") as f:
+                checksums.append(hashlib.md5(f.read()).hexdigest())
+
+        return hashlib.md5("".join(checksums).encode("utf-8")).hexdigest()
 
     def _parition_data(self):
-        if self._are_training_data_up_to_date():
-            return
-
         DataPartitioner(self.config).partition()
         ImageAugmenterStrategy(self.config).run()
 
@@ -61,8 +76,7 @@ class Trainer:
             device=self.config.processing_device,
         )
 
+        version = self.calc_next_version()
         model_path = os.path.join(results.save_dir, "weights", "best.pt")
-        target_model_path = os.path.join("cameratokeyboard", "model.pt")
-        shutil.copyfile(model_path, target_model_path)
-
-        return results
+        os.makedirs(self._target_path, exist_ok=True)
+        shutil.copyfile(model_path, os.path.join(self._target_path, f"{version}.pt"))

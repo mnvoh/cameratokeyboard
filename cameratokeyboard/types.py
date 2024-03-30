@@ -136,3 +136,6 @@ class Fingers:
         Returns a finger by its index.
         """
         return next((x for x in cls.values() if x.index == index), None)
+
+
+S3ContentsItem = namedtuple("S3ContentsItem", ["key", "last_modified"])

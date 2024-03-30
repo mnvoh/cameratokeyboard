@@ -1,6 +1,3 @@
-# DEPRECATED: This and all related files will be removed once we move to the new data pipeline
-# pylint: skip-file
-
 from abc import ABC, abstractmethod
 from typing import Tuple, Union
 
@@ -10,11 +7,25 @@ import numpy as np
 
 
 class ImageAugmenter(ABC):
+    """
+    Abstract base class for image augmenters.
+    """
+
     @abstractmethod
     def __init__(self, *args, **kwargs):
         pass
 
     def apply(self, image: np.ndarray, bounding_boxes: str) -> Tuple[np.ndarray, str]:
+        """
+        Apply image augmentation to the input image and bounding boxes.
+
+        Args:
+            image (np.ndarray): The input image.
+            bounding_boxes (str): The bounding boxes in string format.
+
+        Returns:
+            Tuple[np.ndarray, str]: The augmented image and the serialized bounding boxes.
+        """
         bbs = self.parse_bounding_boxes(bounding_boxes, image.shape)
         aug_image, aug_bounding_boxes = self.augmenter(image=image, bounding_boxes=bbs)
 
@@ -23,6 +34,16 @@ class ImageAugmenter(ABC):
     def parse_bounding_boxes(
         self, bounding_boxes: str, image_shape: Tuple[int, int]
     ) -> BoundingBoxesOnImage:
+        """
+        Parse the bounding boxes from the string format to BoundingBoxesOnImage object.
+
+        Args:
+            bounding_boxes (str): The bounding boxes in string format.
+            image_shape (Tuple[int, int]): The shape of the input image.
+
+        Returns:
+            BoundingBoxesOnImage: The parsed bounding boxes.
+        """
         if not bounding_boxes:
             return None
 
@@ -45,7 +66,17 @@ class ImageAugmenter(ABC):
 
         return BoundingBoxesOnImage(parsed_bounding_boxes, shape=image_shape)
 
-    def serialize_bounding_boxes(bounding_boxes: BoundingBoxesOnImage) -> str:
+    @classmethod
+    def serialize_bounding_boxes(cls, bounding_boxes: BoundingBoxesOnImage) -> str:
+        """
+        Serialize the bounding boxes from BoundingBoxesOnImage object to string format.
+
+        Args:
+            bounding_boxes (BoundingBoxesOnImage): The bounding boxes.
+
+        Returns:
+            str: The serialized bounding boxes.
+        """
         if not bounding_boxes:
             return None
 
@@ -65,6 +96,16 @@ class ImageAugmenter(ABC):
 
 
 class ScaleAugmenter(ImageAugmenter):
+    """
+    A class representing a scale augmenter.
+
+    This augmenter applies scaling transformations to images.
+
+    Args:
+        min_scale (float): The minimum scale factor to apply.
+        max_scale (float): The maximum scale factor to apply.
+    """
+
     def __init__(self, min_scale: float, max_scale: float):
         self.min_scale = min_scale
         self.max_scale = max_scale
@@ -77,6 +118,16 @@ class ScaleAugmenter(ImageAugmenter):
 
 
 class RotationAugmenter(ImageAugmenter):
+    """
+    A class representing a rotation augmenter for images.
+
+    Attributes:
+        min_angle (float): The minimum angle of rotation.
+        max_angle (float): The maximum angle of rotation.
+        augmenter (iaa.Affine): The image augmentation object.
+
+    """
+
     def __init__(self, min_angle: float, max_angle: float):
         self.min_angle = min_angle
         self.max_angle = max_angle
@@ -87,6 +138,16 @@ class RotationAugmenter(ImageAugmenter):
 
 
 class VerticalFlipAugmenter(ImageAugmenter):
+    """
+    A class representing a vertical flip augmenter.
+
+    This augmenter flips images vertically.
+
+    Attributes:
+        augmenter (imgaug.augmenters.Flipud): The vertical flip augmenter.
+
+    """
+
     def __init__(self):
         self.augmenter = iaa.Flipud(True)
 
@@ -95,6 +156,10 @@ class VerticalFlipAugmenter(ImageAugmenter):
 
 
 class HorizontalFlipAugmenter(ImageAugmenter):
+    """
+    Augmenter that performs horizontal flipping on images.
+    """
+
     def __init__(self):
         self.augmenter = iaa.Fliplr(True)
 
@@ -103,13 +168,33 @@ class HorizontalFlipAugmenter(ImageAugmenter):
 
 
 class BlurAugmenter(ImageAugmenter):
+    """
+    A class representing a blur augmenter that applies Gaussian blur to an image.
+
+    Args:
+        min_sigma (float): The minimum standard deviation for the Gaussian blur.
+        max_sigma (float): The maximum standard deviation for the Gaussian blur.
+    """
+
     def __init__(self, min_sigma: float, max_sigma: float):
         self.min_sigma = min_sigma
         self.max_sigma = max_sigma
+        self.augmenter = None
 
     def apply(
         self, image: np.ndarray, bounding_boxes: str
     ) -> Tuple[Union[np.ndarray, str]]:
+        """
+        Applies Gaussian blur to the input image.
+
+        Args:
+            image (np.ndarray): The input image to be augmented.
+            bounding_boxes (str): The bounding boxes associated with the image.
+
+        Returns:
+            Tuple[Union[np.ndarray, str]]: A tuple containing the augmented image and the
+                bounding boxes.
+        """
         sigma = np.random.uniform(self.min_sigma, self.max_sigma)
         self.augmenter = iaa.GaussianBlur(sigma=sigma)
         return super().apply(image, bounding_boxes)
@@ -119,6 +204,15 @@ class BlurAugmenter(ImageAugmenter):
 
 
 class ShearAugmenter(ImageAugmenter):
+    """
+    A class representing a shear augmenter for image data.
+
+    Attributes:
+        min_shear (float): The minimum shear value to apply.
+        max_shear (float): The maximum shear value to apply.
+        augmenter (iaa.ShearX): The shear augmentation object.
+    """
+
     def __init__(self, min_shear: float, max_shear: float):
         self.min_shear = min_shear
         self.max_shear = max_shear
@@ -129,6 +223,16 @@ class ShearAugmenter(ImageAugmenter):
 
 
 class PerspectiveAugmenter(ImageAugmenter):
+    """
+    A class representing a perspective augmenter for image data.
+
+    This augmenter applies perspective transformations to images.
+
+    Args:
+        min_scale (float): The minimum scale factor for the perspective transformation.
+        max_scale (float): The maximum scale factor for the perspective transformation.
+    """
+
     def __init__(self, min_scale: float, max_scale: float):
         self.min_scale = min_scale
         self.max_scale = max_scale

@@ -227,7 +227,7 @@ Please visit [CONTRIBUTING](docs/CONTRIBUTING.md) for more info.
 ## Roadmap
 
 - [x] **Improve the tests**
-- [ ] Establish an actual ML pipeline
+- [x] Establish an actual ML pipeline
 - [ ] Improve the detection accuracy of down fingers
 - [ ] Improve the dataset
 - [ ] Implement the recognition of modifier key presses
